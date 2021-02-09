@@ -1,0 +1,4 @@
+#include "build.hpp"
+
+std::string Build::SourceDir() { return "@CMAKE_CURRENT_SOURCE_DIR@"; }	
+std::string Build::BinaryDir() { return "@PROJECT_BINARY_DIR@"; }	

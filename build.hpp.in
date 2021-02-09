@@ -1,0 +1,18 @@
+#ifndef H_BUILD
+#define H_BUILD
+
+#include <string>
+struct Build {
+	static std::string SourceDir();
+	static std::string BinaryDir();
+};
+
+
+// Posix
+#cmakedefine HAVE_POSIX_MMAP
+#cmakedefine HAVE_POSIX_SYSCONF
+
+#cmakedefine HAVE_LINUX_MAP_POPULATE
+#cmakedefine HAVE_LINUX_MREMAP
+
+#endif

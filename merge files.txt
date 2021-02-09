@@ -1,0 +1,3 @@
+
+insert into runs select id + 10032, t, mode, query, result, rep, time_ms, tuples, cycles, instructions, L1misses, LLCmisses, branchmisses, taskclock, threads, cgen_ms, ccomp_ms, default_blend, key_check_blend, aggregates_blend, backend, scale_factor, pipeline_flavor, full_blend
+ from april.runs;
