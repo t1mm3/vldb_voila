@@ -74,7 +74,7 @@ echo "Installing VOILA"
 
 if [[ ! -e $BASE/voila/src ]]; then
 	mkdir -p $BASE/voila/src || exit 1
-	git clone git@github.com:t1mm3/vldb_voila.git $BASE/voila/src || exit 1
+	git clone https://github.com/t1mm3/vldb_voila.git $BASE/voila/src || exit 1
 fi
 
 mkdir -p $BASE/voila/debug || exit 1
