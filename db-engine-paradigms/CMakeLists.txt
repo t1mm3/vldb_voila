@@ -96,7 +96,6 @@ add_library(common
   src/common/runtime/Types.cpp
   src/common/runtime/String.cpp
   src/common/runtime/Import.cpp
-  src/common/runtime/Hashmap.cpp
   src/common/runtime/Concurrency.cpp
   src/common/runtime/Profile.cpp
   )

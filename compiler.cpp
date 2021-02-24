@@ -25,12 +25,19 @@ void Compiler::call_cxx_compiler(const std::string& ifname,
 
 	std::stringstream s;
 	s << config.cxx_compiler << " ";
+#if defined(__PPC64__) || defined(__ppc64__) || defined(_ARCH_PPC64)
+	if (config.optimized) {
+                s << " -mcpu=native -mtune=native -O3 ";
+        } else {
+                s << " -mcpu=native -mtune=native -O0 -fsanitize=address ";
+        }
+#else
 	if (config.optimized) {
 		s << " -march=native -O3 ";
 	} else {
 		s << " -march=native -O0 -fsanitize=address ";
 	}
-
+#endif
 #ifdef IS_DEBUG
 	s << " -DIS_DEBUG ";
 #endif

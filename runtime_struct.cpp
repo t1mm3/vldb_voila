@@ -168,7 +168,11 @@ void fetch(T* RESTRICT res, T* RESTRICT data, size_t stride,
 #endif
 
 #define PREFETCH_CONST2 0
+#ifdef __AVX512F__
 #define STRUCT_PREFETCH(ptr, rw, tmp) _mm_prefetch((const void*)ptr, _MM_HINT_ET1)
+#else
+#define STRUCT_PREFETCH(ptr, rw, tmp)
+#endif
 #define STRUCT_PREFETCH_READ_ONLY(ptr ) PREFETCH_DATA0(ptr)
 
 template<bool PARALLEL, size_t NEXT_STRIDE, size_t HASH_STRIDE, size_t WIDTH,
@@ -221,7 +225,7 @@ __reinsert_hash_buckets(void** RESTRICT buckets,
 	const size_t hash_stride = HASH_STRIDE ? HASH_STRIDE : _hash_stride;
 	const size_t width = WIDTH ? WIDTH : _width;
 
-#if 1
+#ifdef __AVX512F__
 	if (IMV) {
 		size_t off = start + offset;
 		size_t n = num-start;

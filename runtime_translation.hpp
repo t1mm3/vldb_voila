@@ -4,6 +4,7 @@
 #include "runtime.hpp"
 #include "runtime_simd.hpp"
 
+#ifdef __AVX512F__
 template<typename T, int N, typename F>
 inline void __set_fbuf(_fbuf<T, N>& p, const F& fun)
 {
@@ -70,6 +71,7 @@ translate_pred_avx512_from_scalar(_fbuf<bool, 8>& out, const __mmask8& p)
 {
 	__translate_pred_scalar_from_p<__mmask8, 8>(out, p);
 }
+#endif
 #endif
 
 inline sel_t

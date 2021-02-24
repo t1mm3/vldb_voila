@@ -886,6 +886,7 @@ int g_check_line = 0;
 
 
 
+#ifdef __AVX__
 // from https://helloacm.com/the-rdtsc-performance-timer-written-in-c/
 //  Windows
 #ifdef _WIN32
@@ -904,4 +905,9 @@ uint64_t rdtsc(){
 }
  
 #endif
+#else
+uint64_t rdtsc() {
+  return 0;
+}
 
+#endif

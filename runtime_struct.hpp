@@ -597,6 +597,7 @@ T __not_null(const T& x)
 
 #include "runtime_simd.hpp"
 
+#ifdef __AVX512F__
 template<typename ROW_TYPE, typename TABLE>
 inline static void __SIMD_BUCKET_INSERT(_fbuf<u64, 8>& r, TABLE& table, __mmask8 predicate,
 	const _fbuf<u64, 8>& indices)
@@ -702,7 +703,6 @@ inline static void __SIMD_BUCKET_INSERT(_v512& r, TABLE& table, __mmask8 predica
 
 #define SIMD_BUCKET_INSERT(RESULT, ROW_TYPE, TABLE, PREDICATE, INDICES) \
 	__SIMD_BUCKET_INSERT<ROW_TYPE>(RESULT, TABLE, PREDICATE, INDICES);
-
 
 #include <sstream>
 
@@ -812,5 +812,6 @@ operator <<(std::ostream &o, const _fbuf<T, N>& buffer)
     ss << ")";
     return o << ss.str();
 }
+#endif
 
 #endif

@@ -1,5 +1,5 @@
 #include "runtime_simd.hpp"
-
+#ifdef __AVX512F__
 #define PRINT_TYPE(N, BITS) case TypeCode_##N: num = BITS / (8*sizeof(N));\
 	for (size_t i=0; i<num; i++) { \
 		printf("%s%lld", i == 0 ? "" : ", ", (long long int)a._##N[i]); \
@@ -98,3 +98,4 @@ _v64_print(const _v64& a, const TypeCode& type, const char* prefix, const char* 
 	}
 	printf("\n");
 }
+#endif

@@ -8,7 +8,10 @@
 #include <stdexcept>
 #include <cstring>
 #include <cassert>
+
+#ifdef __AVX2__
 #include <xmmintrin.h>
+#endif
 
 #define PERFORMANCE_MODE
 
@@ -250,11 +253,17 @@ int __dbg_test_prefetch(void* p);
 #error "Compiler doesn't support prefetch"
 #endif
 
+#ifdef __AVX__
 #define PREFETCH_DATA0(ptr) _mm_prefetch((const void*)ptr, _MM_HINT_T0)
 #define PREFETCH_DATA1(ptr) _mm_prefetch((const void*)ptr, _MM_HINT_T1)
 #define PREFETCH_DATA2(ptr) _mm_prefetch((const void*)ptr, _MM_HINT_T2)
 #define PREFETCH_DATA3(ptr) _mm_prefetch((const void*)ptr, _MM_HINT_NTA)
-
+#else
+#define PREFETCH_DATA0(ptr) __PREFETCH((const void*)ptr, 0, 1)
+#define PREFETCH_DATA1(ptr) __PREFETCH((const void*)ptr, 0, 2)
+#define PREFETCH_DATA2(ptr) __PREFETCH((const void*)ptr, 0, 3)
+#define PREFETCH_DATA3(ptr) __PREFETCH((const void*)ptr, 1, 3)
+#endif
 
 #define TYPE_EXPAND_NATIVE_TYPES(F, a) \
 	F(u8, a) \

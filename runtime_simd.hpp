@@ -1,6 +1,7 @@
 #ifndef H_RUNTIME_SIMD
 #define H_RUNTIME_SIMD
 
+#ifdef __AVX512F__
 #include <immintrin.h>
 #include "runtime.hpp"
 
@@ -339,5 +340,5 @@ static __m512i avx512_mulconst_epi64(__m512i data, int64_t _c)
 	}
 }
 
-
+#endif
 #endif
