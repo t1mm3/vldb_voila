@@ -145,11 +145,6 @@ add_executable(explorer explorer.cpp)
 target_link_libraries(explorer voila_compiler voila_runtime common rt)
 
 
-add_custom_command(TARGET voila POST_BUILD
-	COMMAND ${CMAKE_COMMAND} -E copy_directory
-	${CMAKE_SOURCE_DIR}/test_results $<TARGET_FILE_DIR:voila>/test_results)
-
-
 
 add_executable(test_buffering test_buffering.cpp test_buffering_helper.cpp)
 target_link_libraries(test_buffering voila_runtime common)
