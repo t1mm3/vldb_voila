@@ -6,6 +6,15 @@ if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
 	message(FATAL_ERROR "No build type was specified. Valid choices are either -DCMAKE_BUILD_TYPE=Release or -DCMAKE_BUILD_TYPE=Debug")
 endif()
 
+set(ARCH_FLAGS "-mtune=native")
+if(${CMAKE_SYSTEM_PROCESSOR} MATCHES "ppc64")
+  # https://github.com/mfem/mfem/issues/216
+  # march=native not supported on PPC
+  set(ARCH_FLAGS "${ARCH_FLAGS} -mcpu=native")
+else()
+  set(ARCH_FLAGS "${ARCH_FLAGS} -march=native")
+endif()
+
 
 # Download and unpack googletest at configure time
 configure_file(db-engine-paradigms/3rdparty/GTest.CMakeLists.txt googletest-download/CMakeLists.txt)
@@ -46,14 +55,14 @@ add_subdirectory(db-engine-paradigms)
 
 include_directories(db-engine-paradigms/include)
 
-set(CMAKE_CXX_FLAGS " -march=skylake-avx512 -g -fPIC -Wall -Wextra --std=c++17 -Wno-type-limits")
+set(CMAKE_CXX_FLAGS " ${ARCH_FLAGS} -g -fPIC -Wall -Wextra --std=c++17 -Wno-type-limits")
 
-set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG}  -march=skylake-avx512 -fno-omit-frame-pointer -march=native -fsanitize=address  -DIS_DEBUG")
-set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG}  -march=skylake-avx512 -fno-omit-frame-pointer -march=native -fsanitize=address  -DIS_DEBUG")
+set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG}  ${ARCH_FLAGS} -fno-omit-frame-pointer -fsanitize=address  -DIS_DEBUG")
+set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} ${ARCH_FLAGS} -fno-omit-frame-pointer -fsanitize=address  -DIS_DEBUG")
 
-set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -march=native -O3 -g -fno-omit-frame-pointer -DIS_RELEASE")
-set(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE} -march=native -O3 -g -fno-omit-frame-pointer -DIS_RELEASE")
-set(CMAKE_LINKER_FLAGS_RELEASE "${CMAKE_LINKER_FLAGS_RELEASE} -march=native -O3 -g -fno-omit-frame-pointer -DIS_RELEASE")
+set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} ${ARCH_FLAGS} -O3 -g -fno-omit-frame-pointer -DIS_RELEASE")
+set(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE} ${ARCH_FLAGS} -O3 -g -fno-omit-frame-pointer -DIS_RELEASE")
+set(CMAKE_LINKER_FLAGS_RELEASE "${CMAKE_LINKER_FLAGS_RELEASE} ${ARCH_FLAGS} -O3 -g -fno-omit-frame-pointer -DIS_RELEASE")
 
 find_package(PythonInterp 2.7 REQUIRED)
 
