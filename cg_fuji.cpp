@@ -1458,7 +1458,10 @@ FujiCodegen::gen_pipeline(Pipeline& p, size_t number)
 
 
 
-	impl<< "#include <immintrin.h>" << EOL
+	impl 
+		<< "#ifdef __AVX512F__" << EOL
+		<< "#include <immintrin.h>" << EOL
+		<< "#endif" << EOL
 		<< "struct Pipeline_" << number << " : FujiPipeline {" << EOL
 		<< " Pipeline_" << number << "(Query& q, size_t thread_id) : FujiPipeline(q, thread_id, \"Pipeline_" << number << "\") " << EOL
 		<< " {" << EOL;
