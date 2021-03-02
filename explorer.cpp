@@ -598,7 +598,7 @@ int main(int argc, char* argv[]) {
 		qconf.scale_factor= scale_factor;
 		qconf.cxx_compiler = cmd["compiler"].as<std::string>();
 
-		fd_lock = open(cmd["lock_file"].as<std::string>().c_str(), O_CREAT);
+		fd_lock = open(cmd["lock_file"].as<std::string>().c_str(), O_CREAT, S_IRWXU|S_IRWXG);
 		FdLockGuard lock_guard(fd_lock);
 
 		if (cmd.count("base") > 0) {
